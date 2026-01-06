@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edu2Job | Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f4f6f9; margin: 0; display: flex; height: 100vh; }
+        .sidebar { width: 260px; background: #1a202c; color: white; padding-top: 25px; display: flex; flex-direction: column; }
+        .logo { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 40px; color: #63b3ed; }
+        .menu-item { padding: 15px 30px; cursor: pointer; color: #a0aec0; display: flex; align-items: center; gap: 12px; transition: 0.3s; }
+        .menu-item:hover, .menu-item.active { background: #2d3748; color: white; border-left: 4px solid #63b3ed; }
+        .main { flex: 1; padding: 40px; overflow-y: auto; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .hidden { display: none; }
+        .btn-blue { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; color: white; background: #4299e1; transition: 0.2s; }
+        .btn-blue:hover { background: #3182ce; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { color: #4a5568; font-weight: 600; background-color: #f7fafc; }
+        td { color: #2d3748; font-size: 14px; }
+        .star-gold { color: #ecc94b; }
+        .star-gray { color: #cbd5e0; }
+        .btn-flag {
+            padding: 5px 10px;
+            border: 1px solid #fc8181;
+            color: #c53030;
+            background: #fff5f5;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+        .btn-flag:hover { background: #c53030; color: white; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">Admin Panel</div>
+        <div class="menu-item active" onclick="showTab('dashboard', this)">
+            <i class="fas fa-chart-line"></i> Dashboard
+        </div>
+        <div class="menu-item" onclick="showTab('users', this)">
+            <i class="fas fa-users"></i> Users
+        </div>
+        <div class="menu-item" onclick="showTab('datasets', this)">
+            <i class="fas fa-database"></i> Datasets
+        </div>
+        <div class="menu-item" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </div>
+    </div>
+
+    <div class="main">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 id="pageTitle" style="color: #2d3748; margin:0;">System Overview</h2>
+            <div style="color: #718096; font-size: 14px;">Logged in as Admin</div>
+        </div>
+        
+        <div id="dashboard-view">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div class="card" style="border-left: 5px solid #4299e1;">
+                    <h3 style="margin:0; color:#718096; font-size: 14px;">Total Students</h3>
+                    <div id="userCount" style="font-size: 32px; font-weight: 700; color: #2d3748;">0</div>
+                </div>
+                <div class="card" style="border-left: 5px solid #48bb78;">
+                    <h3 style="margin:0; color:#718096; font-size: 14px;">Total Predictions</h3>
+                    <div id="predCount" style="font-size: 32px; font-weight: 700; color: #2d3748;">0</div>
+                </div>
+                <div class="card" style="border-left: 5px solid #ecc94b;">
+                    <h3 style="margin:0; color:#718096; font-size: 14px;">Avg Feedback</h3>
+                    <div id="avgRating" style="font-size: 32px; font-weight: 700; color: #2d3748;">0.0</div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                <div class="card">
+                    <h3 style="margin:0 0 15px 0; color:#2d3748;">Recent Activity & Feedback</h3>
+                    <table id="logsTable">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Prediction</th>
+                                <th>Confidence</th>
+                                <th>Rating</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="5">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <h3 style="margin:0 0 15px 0; color:#2d3748;">Degree Distribution</h3>
+                    <div style="height: 450px;">
+                        <canvas id="adminChart"></canvas>
+                        <p style="text-align:center; font-size:12px; color:#666; margin-top:10px;">Degree based predicted students count</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="users-view" class="hidden">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>Registered Users</h3>
+                    <button class="btn-blue" onclick="loadUsers()"><i class="fas fa-sync"></i> Refresh</button>
+                </div>
+                <div id="usersTable"></div>
+            </div>
+        </div>
+
+        <div id="datasets-view" class="hidden">
+            <div class="card">
+                <h3><i class="fas fa-cloud-upload-alt"></i> Update Training Model</h3>
+                <p style="color: #718096; font-size: 14px;">Upload a CSV file containing student records to retrain the prediction model.</p>
+                
+                <div style="margin-top: 20px; padding: 20px; border: 2px dashed #cbd5e0; border-radius: 8px; text-align: center;">
+                    <input type="file" id="csvFile" accept=".csv" style="margin-bottom: 15px;">
+                    <br>
+                    <button class="btn-blue" onclick="uploadData()">Upload & Retrain Model</button>
+                </div>
+                <p id="uploadStatus" style="margin-top: 15px; font-weight: 500; text-align: center; color: #2d3748;"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        if(!token) window.location.href = '/';
+
+        function showTab(name, el) {
+            document.querySelectorAll('.menu-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+            ['dashboard','users','datasets'].forEach(v => document.getElementById(v+'-view').classList.add('hidden'));
+            document.getElementById(name+'-view').classList.remove('hidden');
+            const titles = {'dashboard': 'System Overview', 'users': 'User Management', 'datasets': 'Model & Data'};
+            document.getElementById('pageTitle').innerText = titles[name];
+
+            if(name === 'dashboard') { loadStats(); loadChart(); }
+            if(name === 'users') loadUsers();
+        }
+
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/admin/stats', { headers: { 'Authorization': 'Bearer ' + token } });
+                if(res.status === 403) { alert("Access Denied"); logout(); return; }
+                const data = await res.json();
+                
+                document.getElementById('userCount').innerText = data.total_users;
+                document.getElementById('predCount').innerText = data.total_predictions;
+                document.getElementById('avgRating').innerText = data.average_rating || "N/A";
+
+                const tbody = document.querySelector('#logsTable tbody');
+                tbody.innerHTML = '';
+                data.recent_logs.forEach(log => {
+                    let stars = '-';
+                    if (log.feedback && log.feedback !== '-') {
+                        stars = `<span class="star-gold">${'★'.repeat(log.feedback)}</span><span class="star-gray">${'★'.repeat(5-log.feedback)}</span>`;
+                    }
+                    let actionBtn = log.flagged
+                    ? `<span style="color:red; font-size:12px; font-weight:600;"><i class="fas fa-flag"></i> Flagged</span>`
+                    : `<button class="btn-flag" onclick="flagPrediction('${log._id}')"><i class="far fa-flag"></i> Flag</button>`;
+
+                    const row = `<tr>
+                        <td><b>${log.user_name}</b></td>
+                        <td>${log.prediction}</td>
+                        <td>${log.confidence}%</td>
+                        <td>${stars}</td>
+                        <td style="color:#a0aec0; font-size:12px;">${log.date}</td>
+                        <td>${actionBtn}</td>
+                    </tr>`;
+                    tbody.innerHTML += row;
+                });
+            } catch (error) { console.error("Error loading stats:", error); }
+        }
+
+        async function loadChart() {
+            const ctx = document.getElementById('adminChart');
+            if(!ctx) return;
+            try {
+                const res = await fetch('/api/stats/degree_job', { headers: { 'Authorization': 'Bearer ' + token } });
+                const data = await res.json();
+                
+                if(window.myAdminChart) window.myAdminChart.destroy();
+
+                window.myAdminChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: ['#4299e1', '#48bb78', '#ecc94b', '#f56565', '#ed64a6', '#4f46e5', '#10b981'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } } 
+                    }
+                });
+            } catch(e) {}
+        }
+
+        async function loadUsers() {
+            document.getElementById('usersTable').innerHTML = '<p>Loading...</p>';
+            try {
+                const res = await fetch('/api/admin/users', { headers: { 'Authorization': 'Bearer ' + token } });
+                const data = await res.json();
+                if (data.length === 0) {
+                    document.getElementById('usersTable').innerHTML = '<p>No users found.</p>';
+                    return;
+                }
+                let html = '<table><thead><tr><th>Name</th><th>Email</th><th>Join Date</th></tr></thead><tbody>';
+                data.forEach(u => {
+                    html += `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.date}</td></tr>`;
+                });
+                html += '</tbody></table>';
+                document.getElementById('usersTable').innerHTML = html;
+            } catch (error) { document.getElementById('usersTable').innerHTML = '<p style="color:red">Failed to load users.</p>'; }
+        }
+        async function flagPrediction(id) {
+            if(!confirm("Are you sure you want to flag this prediction as incorrect?")) return;
+            try {
+                const res = await fetch('/api/admin/flag_prediction', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ prediction_id: id })
+                });
+                const data = await res.json();
+                alert(data.message);
+                if(res.ok) loadStats();
+            } catch(e) {
+                alert("Error flagging prediction");
+            }
+        }
+
+        async function uploadData() {
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+            if(!file) return alert("Please select a CSV file first.");
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const btn = document.getElementById('uploadBtn');
+            const statusEl = document.getElementById('uploadStatus');
+
+            btn.disabled = true;
+            btn.innerText = "Uploading...";
+            statusEl.innerText = "";
+            try {
+                const res = await fetch('/api/admin/upload_dataset', { 
+                    method: 'POST', 
+                    headers: { 'Authorization': 'Bearer ' + token }, 
+                    body: formData 
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    statusEl.innerText = data.message + " (Training running in background)";
+                    statusEl.style.color = "#48bb78";
+                    fileInput.value = "";
+                } else {
+                    statusEl.innerText = data.message;
+                    statusEl.style.color = "#f56565";
+                } 
+            }catch (error) {
+                statusEl.innerText = "Server Error during upload.";
+                statusEl.style.color = "#f56565";
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Upload & Retrain Model";
+            }
+        }
+        function logout() { localStorage.removeItem('token'); window.location.href = '/'; }
+        loadStats();
+        loadChart();
+    </script>
+</body>
+</html>

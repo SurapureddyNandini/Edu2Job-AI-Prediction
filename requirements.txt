@@ -1,0 +1,27 @@
+# Core Framework
+Flask==2.3.3
+flask-cors==4.0.0
+
+# Database
+flask-pymongo==2.3.0
+pymongo==4.6.1
+
+# Authentication & Security
+flask-jwt-extended==4.6.0
+flask-bcrypt==1.0.1
+authlib==1.3.0
+python-dotenv==1.0.1
+flask-limiter==3.5.0
+
+# Machine Learning & Data Processing
+numpy==1.26.4
+pandas==2.1.4
+scikit-learn==1.4.0
+xgboost==2.0.3
+
+# Utilities
+requests==2.31.0
+joblib==1.3.2
+
+# Logging & Background Processing
+gunicorn==21.2.0

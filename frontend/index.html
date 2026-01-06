@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edu2Job - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display:flex;
+            justify-content:center;
+            align-items: center;
+            background-image: url("{{ url_for('static', filename='job_bg.jpg') }}");
+            background-attachment:fixed;
+            background-position: left;
+            background-color: #6bc8e7;
+            background-size:contain;
+            background-blend-mode:normal;
+            
+        }
+        .card {
+            background: #ffffff; 
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            width: 380px;
+            text-align: center;
+            position:relative;
+            z-index: 10;
+            margin-left: 840px; 
+        }
+        .brand-name { color: #4f46e5; font-size: 28px; font-weight: 700; margin: 0; }
+        .tagline { color: #999; font-size: 12px; margin-bottom: 30px; margin-top: 5px; }
+        .welcome-text { font-size: 20px; font-weight: 600; color: #333; margin-bottom: 20px; }
+        
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { font-size: 12px; color: #666; display: block; margin-bottom: 5px; }
+        
+        .password-wrapper { position: relative; width: 100%; }
+        .password-wrapper input { width: 100%; padding-right: 40px; }
+        .toggle-password {
+            position: absolute; top: 50%; right: 12px;
+            transform: translateY(-50%); cursor: pointer; color: #888;
+        }
+        
+        input {
+            width: 100%; padding: 12px;
+            border: 1px solid #e1e1e1; border-radius: 8px;
+            font-size: 14px; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: #4f46e5; }
+        
+        .btn-primary {
+            width: 100%; padding: 12px;
+            background-color: #4f46e5; color: white;
+            border: none; border-radius: 8px;
+            font-weight: 600; font-size: 14px; cursor: pointer;
+            margin-top: 10px; transition: 0.3s;
+        }
+        .btn-primary:hover { background-color: #3730a3; }
+        
+        .divider {
+            margin: 20px 0; font-size: 12px; color: #aaa;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .divider::before, .divider::after {
+            content: ""; height: 1px; background: #eee; flex: 1;
+        }
+        
+        .btn-google {
+            width: 100%; padding: 10px;
+            background: white; border: 1px solid #ddd; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            cursor: pointer; font-size: 14px; color: #555;
+            font-weight: 500; text-decoration: none; transition: 0.2s;
+        }
+        .btn-google:hover { background-color: #f9f9f9; }
+        
+        .footer-link { margin-top: 20px; font-size: 12px; color: #666; }
+        .link { color: #4f46e5; text-decoration: none; font-weight: 600; cursor: pointer; }
+        
+        #registerContainer, #forgotContainer { display: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="brand-name">Edu2Job</h1>
+        <p class="tagline">AI-Powered Job Role Prediction System</p>
+
+        <div id="loginContainer">
+            <div class="welcome-text">Welcome Back</div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="loginPass" placeholder="Enter password">
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)"></i>
+                </div>
+            </div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <span class="link" style="font-size: 12px;" onclick="showForgot()">Forgot Password?</span>
+            </div>
+            <button class="btn-primary" onclick="login()">Sign In</button>
+            
+            <div class="divider">Or continue with</div>
+            <a href="/login/google" class="btn-google">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" width="18">
+                Continue with Google
+            </a>
+            
+            <div class="footer-link">
+                Don't have an account? <span class="link" onclick="showRegister()">Sign Up</span>
+            </div>
+        </div>
+
+        <div id="registerContainer">
+            <div class="welcome-text">Create Account</div>
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="regName" placeholder="John Doe">
+            </div>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="regEmail" placeholder="user@example.com">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="regPass" placeholder="Create a password">
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)"></i>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="register()">Sign Up</button>
+            
+            <div class="divider">Or continue with</div>
+            <a href="/login/google" class="btn-google">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" width="18">
+                Continue with Google
+            </a>
+
+            <div class="footer-link">
+                Already have an account? <span class="link" onclick="showLogin()">Sign In</span>
+            </div>
+        </div>
+
+        <div id="forgotContainer">
+            <div class="welcome-text">Reset Password</div>
+            <p style="font-size:12px; color:#666; margin-bottom:20px;">Enter your details to reset</p>
+            
+            <div class="input-group">
+                <label>Registered Email</label>
+                <input type="email" id="resetEmail">
+            </div>
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="resetName">
+            </div>
+            <div class="input-group">
+                <label>New Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="resetNewPass">
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('resetNewPass', this)"></i>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="resetPassword()">Reset Password</button>
+            <div class="footer-link">
+                Remembered it? <span class="link" onclick="showLogin()">Back to Login</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if(localStorage.getItem('token')) {
+            window.location.href = '/dashboard';
+        }
+
+        function togglePassword(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+            document.getElementById('forgotContainer').style.display = 'none';
+        }
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'none';    
+        }
+        function showForgot() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'block';    
+        }
+
+        async function login() { 
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPass').value;
+            const btn = document.querySelector('#loginContainer .btn-primary');
+
+            if(!email || !password) return alert("Please enter email and password");
+
+            const originalText = btn.innerText;
+            btn.innerText = "Signing In...";
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+            try {
+                const res = await fetch('/login', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                }); 
+                const data = await res.json();
+                if (res.ok) {
+                    localStorage.setItem('token', data.token);
+                    window.location.href = data.role === 'admin' ? '/admin' : '/dashboard';
+                } else {
+                    alert(data.message);
+                }
+
+            } catch (error) { 
+                alert('Connection Error.');
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            }
+        } 
+                
+        async function register() { 
+            const name = document.getElementById('regName').value; 
+            const email = document.getElementById('regEmail').value; 
+            const password = document.getElementById('regPass').value; 
+            const btn = document.querySelector('#registerContainer .btn-primary');
+            if (!name || !email || !password) return alert("Please fill all fields."); 
+            const originalText = btn.innerText;
+            btn.innerText = "Creating Account...";
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+            try{
+                const res = await fetch('/register', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+                alert(data.message);
+                if(res.ok) showLogin(); 
+            } catch (error) { alert('Registration failed.'); }
+            finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            }
+        }
+
+        async function resetPassword() {
+            const email = document.getElementById('resetEmail').value;
+            const name = document.getElementById('resetName').value;
+            const new_password = document.getElementById('resetNewPass').value;
+            if(!email || !name || !new_password) return alert("All fields required.");
+            try {
+                const res = await fetch('/api/reset_password_manual', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, name, new_password })
+                });
+                const data = await res.json();
+                alert(data.message);
+                if(res.ok) showLogin();
+            } catch (error) { alert('Connection Error.'); }
+        }
+    </script> 
+</body> 
+</html>

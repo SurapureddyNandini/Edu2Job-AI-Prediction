@@ -1,4 +1,14 @@
-Edu2Job - AI-Powered Career Prediction System 
+Edu2Job: AI-Powered Career Prediction System 🚀
+
+https://img.shields.io/badge/Python-3.8+-blue?style=flat&logo=python
+
+https://img.shields.io/badge/Flask-2.0+-lightgrey?style=flat&logo=flask
+
+https://img.shields.io/badge/MongoDB-5.0+-green?style=flat&logo=mongodb
+
+https://img.shields.io/badge/XGBoost-Latest-orange?style=flat
+
+https://img.shields.io/badge/License-MIT-yellow?style=flat
 
 📌 Project Overview
 
@@ -177,7 +187,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
 
 bash
 
-# Ensure career_dataset.csv is in ml-model directory
+#Ensure career_dataset.csv is in ml-model directory
 
 cd ml-model
 

@@ -18,6 +18,7 @@ backend/.env
 logs/
 *.log
 backend/logs/
+ml-model/backups/
 instance/
 .webassets-cache
 Thumbs.db

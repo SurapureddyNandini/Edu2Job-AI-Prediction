@@ -1,110 +1,90 @@
-Edu2Job: AI-Powered Career Prediction System 
+# Edu2Job: AI-Powered Career Prediction System
 
-📌 Project Overview
 
-Edu2Job is a full-stack web application that uses machine learning to predict suitable job roles for students based on their academic profiles, skills, and experience. The system provides personalized career recommendations with confidence scores and comparative market insights.
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/flask-2.0%2B-green)](https://flask.palletsprojects.com/)
 
-✨ Key Features
 
-🔐 Authentication & Security
+## 📌 Project Overview
+**Edu2Job** is a full-stack web application that uses machine learning to predict suitable job roles for students based on their academic profiles, skills, and experience. The system provides personalized career recommendations with confidence scores and comparative market insights.
 
-JWT-based authentication with secure token storage
 
-Google OAuth 2.0 integration for social login
 
-Password encryption using Flask-Bcrypt
+## ✨ Key Features
+### 🔐 Authentication & Security
+* **JWT-based authentication** with secure token storage
+* **Google OAuth 2.0 integration** for social login
+* **Password encryption** using Flask-Bcrypt
+* **Rate limiting** (100 requests/hour per IP)
+* **Security headers** (XSS protection, CSRF prevention)
+* **Password Policy:** Strong password validation (Min 8 chars, 1 uppercase, 1 number).
+* **Encryption:** Passwords hashed using **Flask-Bcrypt**.
 
-Rate limiting (100 requests/hour per IP)
+### 📊 ML-Powered Prediction Engine
+* **XGBoost Classifier Model** trained on structured tabular data.
+* **Top-3 Predictions** Generates the top 3 recommended roles with confidence scores (e.g., "92% Match").
+* **Explainable AI:** Provides text justification for *why* a role was chosen based on specific skills (e.g., "Matched due to Python & SQL").
+* **Multi-label skills encoding** with noise reduction
+* **Preprocessing:** Automated pipeline for Label Encoding, Scaling, and Skill Parsing.
 
-Security headers (XSS protection, CSRF prevention)
+### 👤 User Dashboard
+* **Profile management** with academic details
+* **Interactive prediction history** with feedback system
+* **Market comparison charts** (CGPA vs market average)
+* **Trending job visualization** using **Chart.js**
 
-📊 ML-Powered Prediction Engine
 
-XGBoost classifier trained on career dataset
+### 👑 Admin Panel
+* **System Dashboard:** Real-time overview of total users, active logs, and feedback ratings.
+* **Dataset Management:** Upload new training datasets (`.csv`) to trigger **automated background model retraining**.
+* **Quality Assurance:** Review prediction logs and **Flag** incorrect predictions for future refinement.
+* **Logs:** Centralized error and activity logging via `RotatingFileHandler`.
 
-Multi-label skills encoding with noise reduction
+---
 
-Intelligent preprocessing of academic data
+## 🏗️ Tech Stack
 
-Top-3 predictions with confidence percentages
+| Component | Technologies |
+| :--- | :--- |
+| **Frontend** | HTML5, CSS3, JavaScript (Vanilla), Chart.js, Font Awesome |
+| **Backend** | Python, Flask, Flask-JWT-Extended, Flask-Limiter, Flask-Bcrypt |
+| **Database** | MongoDB (PyMongo) |
+| **Machine Learning** | XGBoost, Scikit-Learn, Pandas, NumPy |
+| **Auth** | Authlib (Google OAuth), JWT |
 
-Justification system explaining why roles were recommended
+---
 
-👤 User Dashboard
+## 📐 System Architecture
 
-Profile management with academic details
+The following diagram illustrates how the User, Frontend, Backend, and Database interact:
 
-Interactive prediction history with feedback system
+```mermaid
+graph TD
+    %% Nodes
+    User((👤 User))
+    Frontend[💻 Frontend UI<br/>HTML5, JS, Chart.js]
+    Auth[🔐 Auth Layer<br/>Google OAuth / JWT]
+    Backend[⚙️ Backend API<br/>Python Flask]
+    DB[(🗄️ MongoDB<br/>User Data & History)]
+    ML[🧠 ML Model<br/>XGBoost Classifier]
 
-Market comparison charts (CGPA vs market average)
+    %% Connections
+    User -->|1. Login/Register| Frontend
+    Frontend -->|2. Auth Request| Auth
+    Auth -->|3. Validate| Backend
+    Frontend -->|4. Input Profile| Backend
+    Backend <-->|5. Read/Write Data| DB
+    Backend -->|6. Send Vector| ML
+    
+    %% Return Paths (Dotted Lines)
+    ML -.->|7. Return Top 3 Roles| Backend
+    Backend -.->|8. JSON Response| Frontend
+```
+---
 
-Trending job visualization using Chart.js
-
-Real-time skill tagging with autocomplete
-
-👑 Admin Panel
-
-User management with registration tracking
-
-System statistics dashboard
-
-Prediction flagging for incorrect results
-
-CSV dataset upload for model retraining
-
-Training logs and performance metrics
-
-📈 Analytics & Insights
-
-Job distribution charts by degree/role
-
-Personal vs market benchmark comparisons
-
-Feedback aggregation (1-5 star ratings)
-
-Degree-wise prediction statistics
-
-🏗️ Tech Stack
-
-Backend
-
-Flask - Python web framework
-
-PyMongo - MongoDB database integration
-
-Flask-JWT-Extended - Secure authentication
-
-Scikit-learn & XGBoost - Machine learning
-
-Pandas & NumPy - Data processing
-
-Authlib - OAuth integration
-
-Frontend
-
-HTML5, CSS3, JavaScript (Vanilla)
-
-Chart.js - Data visualization
-
-Font Awesome - Icons
-
-Google Fonts (Poppins) - Typography
-
-Database
-
-MongoDB - NoSQL database for user data and prediction history
-
-Deployment & Infrastructure
-
-Environment variables via python-dotenv
-
-Logging with RotatingFileHandler
-
-CORS enabled for API security
-
-Model artifact backup system
-
-📁 Project Structure
+## 📁 Project Structure
+```
 Edu2Job/ 
 ├── backend/ 
 │   ├── logs/                     # Application logs
@@ -131,17 +111,14 @@ Edu2Job/
 ├── .gitignore
 ├── requirements.txt 
 └── README.md              # Model backups
-
+```
     
-🚀 Installation & Setup
+## 🚀 Installation & Setup
 
-Prerequisites
-
-Python 3.8+
-
-MongoDB instance (local or Atlas)
-
-Google OAuth credentials
+### 1. Prerequisites
+* **Python 3.8+**
+* **MongoDB instance (local or Atlas)
+* Google OAuth credentials
 
 1. Clone Repository
 
@@ -215,167 +192,137 @@ Artifacts saved with timestamped backups
 
 Model reloaded without restarting app
 
-🔧 API Endpoints
+## 🔧 API Endpoints
 
-Authentication
+### Authentication
 
-POST /register - User registration
+* ```POST /register``` - Register new user
+* ```POST /login``` - User login (JWT)
+* ```GET /login/google``` - Google OAuth login
+* ```POST /api/change_password``` - Password change
 
-POST /login - User login (JWT)
+### User Operations
 
-GET /login/google - Google OAuth
+* ```GET /api/profile``` - Get user profile
+* ```PUT /api/update_profile``` - Update profile
+* ```POST /api/predict``` - Get job predictions
+* ```GET /api/history``` - Get Prediction history
+* ```POST /api/feedback``` - Submit feedback
 
-POST /api/change_password - Password change
+### Analytics
 
-User Operations
+* ```GET /api/stats/job_distribution``` - Job trends
+* ```GET /api/stats/comparison``` - Market comparison
+* ```GET /api/stats/degree_job``` - Degree statistics
 
-GET /api/profile - Get user profile
+### Admin Operations
 
-PUT /api/update_profile - Update profile
+* ```GET /api/admin/users``` - List all users
+* ```GET /api/admin/stats``` - System statistics
+* ```POST /api/admin/flag_prediction``` - Flag incorrect predictions
+* ```POST /api/admin/upload_dataset``` - Upload new training data
 
-POST /api/predict - Get job predictions
+## 🎯 Usage Guide
 
-GET /api/history - Prediction history
+### For Students
 
-POST /api/feedback - Submit feedback
+1. **Register/Login** using email or Google
 
-Analytics
+2. **Complete profile** with academic details
 
-GET /api/stats/job_distribution - Job trends
+3. **Add skills** focusing on technical competencies
 
-GET /api/stats/comparison - Market comparison
+4. **Get predictions** with confidence scores
 
-GET /api/stats/degree_job - Degree statistics
+5. **View history** and provide feedback
 
-Admin Operations
+6. **Compare** with market benchmarks
 
-GET /api/admin/users - List all users
+### For Administrators
 
-GET /api/admin/stats - System statistics
+1. Access ```/admin``` with admin credentials
 
-POST /api/admin/flag_prediction - Flag incorrect predictions
+2. Monitor system statistics
 
-POST /api/admin/upload_dataset - Upload new training data
+3. Manage users and predictions
 
-🎯 Usage Guide
+4. Flag incorrect predictions for review
 
-For Students
+5. Upload new datasets for model improvement
 
-Register/Login using email or Google
+## 🔒 Security Features
 
-Complete profile with academic details
+* **Input sanitization** against XSS attacks
+* **Password validation** (min 8 chars, uppercase, number)
+* **JWT token expiration** management
+* **Rate limiting** on login endpoints
+* **Secure headers** (X-Frame-Options, XSS-Protection)
+* **MongoDB injection prevention** via PyMongo
 
-Add skills focusing on technical competencies
+## 📈 Performance Optimization
 
-Get predictions with confidence scores
+* **Background model training** using threading
+* **Chart.js** for client-side rendering
+* **Efficient ML preprocessing** pipelines
+* **MongoDB indexing** for faster queries
+* **Artifact caching** for model predictions
 
-View history and provide feedback
+## 🐛 Troubleshooting
 
-Compare with market benchmarks
+### Common Issues
 
-For Administrators
+1.**Model not loading:** Check if ```ml-model/``` contains required ```.pkl``` files
 
-Access /admin with admin credentials
+2.**MongoDB connection failed:** Verify ```MONGO_URI``` in ```.env```
 
-Monitor system statistics
+3.**Google login not working:** Ensure OAuth credentials are correct
 
-Manage users and predictions
+4.**Prediction errors:** Check if skills exist in trained vocabulary
 
-Flag incorrect predictions for review
+## Logs
 
-Upload new datasets for model improvement
+* Application logs: ```logs/edu2job.log```
+* Training logs: Console output during model training
+* Backup logs: Check ```backups/``` directory for previous models
 
-🔒 Security Features
+## **📝 Future Enhancements**
 
-Input sanitization against XSS attacks
+* **Real-time notifications** for new job matches
+* **Resume parser** for automatic profile creation
+* **Company matching** based on skills
+* **Interview preparation** module
+* **Mobile application** (React Native/Flutter)
+* **Advanced analytics** with predictive trends
+* **Multi-language support**
 
-Password validation (min 8 chars, uppercase, number)
+## 🤝 Contributing
 
-JWT token expiration management
+We welcome contributions! Here's how you can help:
 
-Rate limiting on login endpoints
+1.**Fork the repository**
 
-Secure headers (X-Frame-Options, XSS-Protection)
+2.**Create a feature branch** ( ```git checkout -b feature/AmazingFeature``` )
 
-MongoDB injection prevention via PyMongo
+3.**Commit your changes** ( ```git commit -m 'Add AmazingFeature'``` )
 
-📈 Performance Optimization
+4.**Push to the branch** ( ```git push origin feature/AmazingFeature``` )
 
-Background model training using threading
+5.**Open a Pull Request**
 
-Chart.js for client-side rendering
-
-Efficient ML preprocessing pipelines
-
-MongoDB indexing for faster queries
-
-Artifact caching for model predictions
-
-🐛 Troubleshooting
-
-Common Issues
-
-Model not loading: Check if ml-model/ contains required .pkl files
-
-MongoDB connection failed: Verify MONGO_URI in .env
-
-Google login not working: Ensure OAuth credentials are correct
-
-Prediction errors: Check if skills exist in trained vocabulary
-
-Logs
-
-Application logs: logs/edu2job.log
-
-Training logs: Console output during model training
-
-Backup logs: Check backups/ directory for previous models
-
-📝 Future Enhancements
-
-Real-time notifications for new job matches
-
-Resume parser for automatic profile creation
-
-Company matching based on skills
-
-Interview preparation module
-
-Mobile application (React Native/Flutter)
-
-Advanced analytics with predictive trends
-
-Multi-language support
-
-🤝 Contributing
-
-Fork the repository
-
-Create a feature branch (git checkout -b feature/AmazingFeature)
-
-Commit changes (git commit -m 'Add AmazingFeature')
-
-Push to branch (git push origin feature/AmazingFeature)
-
-Open a Pull Request
-
-📄 License
+## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-🙏 Acknowledgments
+## 🙏 Acknowledgments
 
-XGBoost team for the powerful ML library
+* **XGBoost Development Team** for the powerful ML library
+* **Flask Community** for excellent documentation 
+* **Chart.js Team** for beautiful data visualization
+* **Font Awesome** for icons
+* **Google** Fonts for typography
 
-Flask community for excellent documentation
+## 📞 Support
 
-Chart.js for beautiful data visualization
+For support, **email:** [nandinisurapureddy4@gmail.com] or create an issue in the GitHub repository.
 
-Font Awesome for icons
-
-Google Fonts for typography
-
-📞 Support
-For support, email: [nandinisurapureddy4@gmail.com] or create an issue in the GitHub repository.
-
-Note: This system is for educational purposes. Always verify career advice with professional counselors.
+**Note:** This system is for educational purposes. Always verify career advice with professional counselors.

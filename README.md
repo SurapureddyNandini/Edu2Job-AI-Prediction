@@ -1,4 +1,4 @@
-# Edu2Job: AI-Powered Career Prediction System
+# Edu2Job: AI-Powered Job Role Prediction System
 
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -110,87 +110,87 @@ Edu2Job/
 ├── Images/
 ├── .gitignore
 ├── requirements.txt 
-└── README.md              # Model backups
+└── README.md              
 ```
     
 ## 🚀 Installation & Setup
 
-### 1. Prerequisites
+ ### Prerequisites
 * **Python 3.8+**
-* **MongoDB instance (local or Atlas)
-* Google OAuth credentials
+* **MongoDB instance** (local or Atlas)
+* **Google OAuth credentials**
 
-1. Clone Repository
-
+### 1. Clone Repository
+   
+```
 bash
 
 git clone <repository-url>
-
 cd Edu2Job
+```
 
-2. Install Dependencies
+### 2. Install Dependencies
 
+```
 bash
 
 pip install -r requirements.txt
+```
 
-3. Configure Environment Variables
+### 3. Configure Environment Variables
    
-Create a .env file in the root directory:
-
+Create a ```.env``` file in the root directory:
+```
 env
 
 FLASK_SECRET_KEY=your_secret_key_here
-
 MONGO_URI=mongodb://localhost:27017/edu2job
-
 JWT_SECRET_KEY=your_jwt_secret
-
 GOOGLE_CLIENT_ID=your_google_client_id
-
 GOOGLE_CLIENT_SECRET=your_google_client_secret
+```
 
-4. Prepare ML Model
-
+### 4. Prepare ML Model
+```
 bash
 
 #Ensure career_dataset.csv is in ml-model directory
 
 cd ml-model
-
 python train_model.py
+```
 
-5. Run Application
-   
+### 5. Run Application
+```
 bash
 
 python app.py
+```
 
-The application will be available at http://localhost:5000 
+The application will be available at ```http://localhost:5000```
 
-📊 Model Training
 
-Dataset Requirements
+## 📊 Model Training
+
+### Dataset Requirements
 
 The CSV file must contain these columns:
 
-degree, specialization, cgpa, graduation_year
+* ```degree```, ```specialization```, ```cgpa```, ```graduation_year```
+* ```skills``` (comma-separated), ```job_role``` (target)
+* ```certifications```, ```internship_experience```
 
-skills (comma-separated), job_role (target)
+### Training Process
 
-certifications, internship_experience
+1. Upload CSV via admin panel
 
-Training Process
+2. Automatic preprocessing (encoding, scaling)
 
-Upload CSV via admin panel
+3. XGBoost training with evaluation metrics
 
-Automatic preprocessing (encoding, scaling)
+4. Artifacts saved with timestamped backups
 
-XGBoost training with evaluation metrics
-
-Artifacts saved with timestamped backups
-
-Model reloaded without restarting app
+5. Model reloaded without restarting app
 
 ## 🔧 API Endpoints
 
@@ -271,13 +271,13 @@ Model reloaded without restarting app
 
 ### Common Issues
 
-1.**Model not loading:** Check if ```ml-model/``` contains required ```.pkl``` files
+1. **Model not loading:** Check if ```ml-model/``` contains required ```.pkl``` files
 
-2.**MongoDB connection failed:** Verify ```MONGO_URI``` in ```.env```
+2. **MongoDB connection failed:** Verify ```MONGO_URI``` in ```.env```
 
-3.**Google login not working:** Ensure OAuth credentials are correct
+3. **Google login not working:** Ensure OAuth credentials are correct
 
-4.**Prediction errors:** Check if skills exist in trained vocabulary
+4. **Prediction errors:** Check if skills exist in trained vocabulary
 
 ## Logs
 
@@ -285,7 +285,7 @@ Model reloaded without restarting app
 * Training logs: Console output during model training
 * Backup logs: Check ```backups/``` directory for previous models
 
-## **📝 Future Enhancements**
+## 📝 Future Enhancements
 
 * **Real-time notifications** for new job matches
 * **Resume parser** for automatic profile creation
@@ -319,7 +319,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 * **Flask Community** for excellent documentation 
 * **Chart.js Team** for beautiful data visualization
 * **Font Awesome** for icons
-* **Google** Fonts for typography
+* **Google Fonts** for typography
 
 ## 📞 Support
 

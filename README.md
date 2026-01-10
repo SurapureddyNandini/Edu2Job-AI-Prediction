@@ -6,13 +6,13 @@
 [![Flask](https://img.shields.io/badge/flask-2.0%2B-green)](https://flask.palletsprojects.com/)
 
 
-## 📌 Project Overview
+##  Project Overview
 **Edu2Job** is a full-stack web application that uses machine learning to predict suitable job roles for students based on their academic profiles, skills, and experience. The system provides personalized career recommendations with confidence scores and comparative market insights.
 
 
 
-## ✨ Key Features
-### 🔐 Authentication & Security
+##  Key Features
+###  Authentication & Security
 * **JWT-based authentication** with secure token storage
 * **Google OAuth 2.0 integration** for social login
 * **Password encryption** using Flask-Bcrypt
@@ -21,21 +21,21 @@
 * **Password Policy:** Strong password validation (Min 8 chars, 1 uppercase, 1 number).
 * **Encryption:** Passwords hashed using **Flask-Bcrypt**.
 
-### 📊 ML-Powered Prediction Engine
+###  ML-Powered Prediction Engine
 * **XGBoost Classifier Model** trained on structured tabular data.
 * **Top-3 Predictions** Generates the top 3 recommended roles with confidence scores (e.g., "92% Match").
 * **Explainable AI:** Provides text justification for *why* a role was chosen based on specific skills (e.g., "Matched due to Python & SQL").
 * **Multi-label skills encoding** with noise reduction
 * **Preprocessing:** Automated pipeline for Label Encoding, Scaling, and Skill Parsing.
 
-### 👤 User Dashboard
+###  User Dashboard
 * **Profile management** with academic details
 * **Interactive prediction history** with feedback system
 * **Market comparison charts** (CGPA vs market average)
 * **Trending job visualization** using **Chart.js**
 
 
-### 👑 Admin Panel
+###  Admin Panel
 * **System Dashboard:** Real-time overview of total users, active logs, and feedback ratings.
 * **Dataset Management:** Upload new training datasets (`.csv`) to trigger **automated background model retraining**.
 * **Quality Assurance:** Review prediction logs and **Flag** incorrect predictions for future refinement.
@@ -43,7 +43,7 @@
 
 ---
 
-## 🏗️ Tech Stack
+##  Tech Stack
 
 | Component | Technologies |
 | :--- | :--- |
@@ -55,7 +55,7 @@
 
 ---
 
-## 📐 System Architecture
+##  System Architecture
 
 The following diagram illustrates how the User, Frontend, Backend, and Database interact:
 
@@ -83,7 +83,7 @@ graph TD
 ```
 ---
 
-## 📁 Project Structure
+##  Project Structure
 ```
 Edu2Job/ 
 ├── backend/ 
@@ -113,7 +113,7 @@ Edu2Job/
 └── README.md              
 ```
     
-## 🚀 Installation & Setup
+##  Installation & Setup
 
  ### Prerequisites
 * **Python 3.8+**
@@ -170,7 +170,7 @@ python app.py
 The application will be available at ```http://localhost:5000```
 
 
-## 📊 Model Training
+##  Model Training
 
 ### Dataset Requirements
 
@@ -192,7 +192,7 @@ The CSV file must contain these columns:
 
 5. Model reloaded without restarting app
 
-## 🔧 API Endpoints
+##  API Endpoints
 
 ### Authentication
 
@@ -222,7 +222,7 @@ The CSV file must contain these columns:
 * ```POST /api/admin/flag_prediction``` - Flag incorrect predictions
 * ```POST /api/admin/upload_dataset``` - Upload new training data
 
-## 🎯 Usage Guide
+##  Usage Guide
 
 ### For Students
 
@@ -250,7 +250,7 @@ The CSV file must contain these columns:
 
 5. Upload new datasets for model improvement
 
-## 🔒 Security Features
+##  Security Features
 
 * **Input sanitization** against XSS attacks
 * **Password validation** (min 8 chars, uppercase, number)
@@ -259,7 +259,7 @@ The CSV file must contain these columns:
 * **Secure headers** (X-Frame-Options, XSS-Protection)
 * **MongoDB injection prevention** via PyMongo
 
-## 📈 Performance Optimization
+##  Performance Optimization
 
 * **Background model training** using threading
 * **Chart.js** for client-side rendering
@@ -267,7 +267,7 @@ The CSV file must contain these columns:
 * **MongoDB indexing** for faster queries
 * **Artifact caching** for model predictions
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Common Issues
 
@@ -285,7 +285,7 @@ The CSV file must contain these columns:
 * Training logs: Console output during model training
 * Backup logs: Check ```backups/``` directory for previous models
 
-## 📝 Future Enhancements
+##  Future Enhancements
 
 * **Real-time notifications** for new job matches
 * **Resume parser** for automatic profile creation
@@ -295,7 +295,7 @@ The CSV file must contain these columns:
 * **Advanced analytics** with predictive trends
 * **Multi-language support**
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions! Here's how you can help:
 
@@ -309,11 +309,11 @@ We welcome contributions! Here's how you can help:
 
 5.**Open a Pull Request**
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 * **XGBoost Development Team** for the powerful ML library
 * **Flask Community** for excellent documentation 
@@ -321,7 +321,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 * **Font Awesome** for icons
 * **Google Fonts** for typography
 
-## 📞 Support
+##  Support
 
 For support, **email:** [nandinisurapureddy4@gmail.com] or create an issue in the GitHub repository.
 
